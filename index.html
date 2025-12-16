@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Playlist Lagu Tulus | Santai & Enak Didengerin</title>
+  <meta name="description" content="Kumpulan lagu Tulus yang enak didengerin kapan aja. Monokrom, Pamit, Manusia Kuat, dan lainnya.">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* CSS Variables */
+    :root {
+      --background: #0a0a0a;
+      --foreground: #fafafa;
+      --card: #141414;
+      --card-hover: #1a1a1a;
+      --primary: #1DB954;
+      --primary-glow: #1ed760;
+      --muted: #737373;
+      --border: #262626;
+      --radius: 12px;
+    }
+
+    /* Reset & Base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--background);
+      color: var(--foreground);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    /* Header */
+    .header {
+      position: relative;
+      padding: 48px 16px 64px;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(29, 185, 84, 0.1), rgba(29, 185, 84, 0.05), transparent);
+      pointer-events: none;
+    }
+
+    .header-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (min-width: 768px) {
+      .header {
+        padding: 80px 16px 80px;
+      }
+      .header-content {
+        flex-direction: row;
+        gap: 32px;
+      }
+    }
+
+    /* Playlist Cover */
+    .playlist-cover {
+      width: 192px;
+      height: 192px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(29, 185, 84, 0.3), rgba(29, 185, 84, 0.1));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(29, 185, 84, 0.2);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .playlist-cover:hover {
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 60px rgba(29, 185, 84, 0.4);
+    }
+
+    @media (min-width: 768px) {
+      .playlist-cover {
+        width: 224px;
+        height: 224px;
+      }
+    }
+
+    .disc-icon {
+      width: 96px;
+      height: 96px;
+      color: var(--primary);
+      animation: spin 8s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Playlist Info */
+    .playlist-info {
+      text-align: center;
+    }
+
+    @media (min-width: 768px) {
+      .playlist-info {
+        text-align: left;
+      }
+    }
+
+    .playlist-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+
+    .playlist-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    @media (min-width: 768px) {
+      .playlist-title {
+        font-size: 3.75rem;
+      }
+    }
+
+    .text-gradient {
+      background: linear-gradient(135deg, var(--primary), var(--primary-glow));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .playlist-desc {
+      color: var(--muted);
+      font-size: 1.125rem;
+      max-width: 500px;
+      animation: fadeIn 0.6s ease-out 0.1s both;
+    }
+
+    .playlist-meta {
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 14px;
+      color: var(--muted);
+      animation: fadeIn 0.6s ease-out 0.2s both;
+    }
+
+    @media (min-width: 768px) {
+      .playlist-meta {
+        justify-content: flex-start;
+      }
+    }
+
+    .playlist-meta .count {
+      font-weight: 500;
+      color: var(--foreground);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Main Content */
+    main {
+      padding: 0 16px 80px;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    /* Song Grid */
+    .song-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    @media (min-width: 640px) {
+      .song-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .song-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    /* Song Card */
+    .song-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+
+    .song-card:hover {
+      background: var(--card-hover);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+      border-color: var(--border);
+    }
+
+    .song-card.active {
+      border-color: var(--primary);
+      box-shadow: 0 0 20px rgba(29, 185, 84, 0.2);
+    }
+
+    .song-cover-wrapper {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .song-cover {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .song-card:hover .song-cover {
+      transform: scale(1.02);
+    }
+
+    .play-button {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      width: 48px;
+      height: 48px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      border: none;
+      cursor: pointer;
+    }
+
+    .song-card:hover .play-button,
+    .song-card.active .play-button {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .play-button:hover {
+      transform: scale(1.1);
+      background: var(--primary-glow);
+    }
+
+    .play-button svg {
+      width: 24px;
+      height: 24px;
+      fill: #000;
+    }
+
+    .song-title {
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .song-artist {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* YouTube Player */
+    .youtube-player {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, #000, var(--card));
+      border-top: 1px solid var(--border);
+      padding: 16px;
+      z-index: 100;
+      animation: slideUp 0.3s ease-out;
+    }
+
+    .youtube-player.active {
+      display: block;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .player-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    @media (min-width: 768px) {
+      .player-content {
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+
+    .player-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+    }
+
+    .player-cover {
+      width: 64px;
+      height: 64px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .player-details h3 {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .player-details p {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .player-video {
+      flex: 2;
+      aspect-ratio: 16/9;
+      max-height: 200px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .player-video iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .close-button:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .close-button svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--foreground);
+    }
+
+    /* Footer spacing when player is active */
+    body.player-active main {
+      padding-bottom: 300px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <!-- Playlist Cover -->
+        <div class="playlist-cover">
+          <svg class="disc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 12L12 6"/>
+          </svg>
+        </div>
+        
+        <!-- Playlist Info -->
+        <div class="playlist-info">
+          <div class="playlist-label">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18V5l12-2v13"/>
+              <circle cx="6" cy="18" r="3"/>
+              <circle cx="18" cy="16" r="3"/>
+            </svg>
+            Playlist
+          </div>
+          <h1 class="playlist-title">
+            Playlist Lagu <span class="text-gradient">Tulus</span>
+          </h1>
+          <p class="playlist-desc">
+            Kumpulan lagu Tulus yang enak didengerin kapan aja. Santai, dalam, dan penuh makna.
+          </p>
+          <div class="playlist-meta">
+            <span class="count">8 lagu</span>
+            <span>•</span>
+            <span>~30 menit</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <div class="container">
+      <h2 class="section-title">Daftar Lagu</h2>
+      
+      <div class="song-grid">
+        <!-- Song 1 -->
+        <div class="song-card" data-spotify="4GfK1qOF3uBWidbPlTCQRL" data-title="Monokrom" data-artist="Tulus" data-cover="image/01.jpg">
+          <div class="song-cover-wrapper">
+            <img src="image/01.jpg" alt="Monokrom" class="song-cover">
+            <button class="play-button">
+              <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+            </button>
+          </div>
+          <h3 class="song-title">Monokrom</h3>
+          <p class="song-artist">Tulus</p>
+        </div>
+
+        <!-- Song 2 -->
+        <div class="song-card" data-spotify="3B4VP6swG49n3scg2aMfA6" data-title="Pamit" data-artist="Tulus" data-cover="image/02.jpg">
+          <div class="song-cover-wrapper">
+            <img src="image/02.jpg" alt="Pamit" class="song-cover">
+            <button class="play-button">
+              <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+            </button>
+          </div>
+          <h3 class="song-title">Pamit</h3>
+          <p class="song-artist">Tulus</p>
+        </div>
+
+        <!-- Song 3 -->
+        <div class="song-card" data-spotify="1vT1rKlEzvT9r0uYwAuwC8" data-title="Manusia Kuat" data-artist="Tulus" data-cover="image/02.jpg">
+          <div class="song-cover-wrapper">
+            <img src="image/02.jpg" alt="Manusia Kuat" class="song-cover">
+            <button class="play-button">
+              <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+            </button>
+          </div>
+          <h3 class="song-title">Manusia Kuat</h3>
+          <p class="song-artist">Tulus</p>
+        </div>
+
+        <!-- Song 4 -->
+        <div class="song-card" data-spotify="2hHeGD57S0BcopfVcmehdl" data-title="Hati-Hati di Jalan" data-artist="Tulus" data-cover="image/03.jpg">
+          <div class="song-cover-wrapper">
+            <img src="image/03.jpg" alt="Hati-Hati di Jalan" class="song-cover">
+            <button class="play-button">
+              <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+            </button>
+          </div>
+          <h3 class="song-title">Hati-Hati di Jalan</h3>
+          <p class="song-artist">Tulus</p>
+        </div>
+
+        <!-- Song 5 -->
+        <div class="song-card" data-spotify="73DWDOjVUyJ8sAiAcySvgS" data-title="Sepatu" data-artist="Tulus" data-cover="image/03.jpg">
+          <div class="song-cover-wrapper">
+            <img src="image/03.jpg" alt="Sepatu" class="song-cover">
+            <button class="play-button">
+              <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+            </button>
+          </div>
+          <h3 class="song-title">Sepatu</h3>
+          <p class="song-artist">Tulus</p>
+        </div>
+
+        <!-- Song 6 -->
+        <div class="song-card" data-spotify="3AdEZRmsa3zviTr2Whx3zI" data-title="Nala" data-artist="Tulus" data-cover="image/02.jpg">
+          <div class="song-cover-wrapper">
+            <img src="image/02.jpg" alt="Nala" class="song-cover">
+            <button class="play-button">
+              <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+            </button>
+          </div>
+          <h3 class="song-title">Nala</h3>
+          <p class="song-artist">Tulus</p>
+        </div>
+
+        <!-- Song 7 -->
+        <div class="song-card" data-youtube="51oQZ1A2BZe6b4klnpTFzK" data-title="Ingatlah Hari Ini" data-artist="Tulus" data-cover="image/03.jpg">
+          <div class="song-cover-wrapper">
+            <img src="image/03.jpg" alt="Ingatlah hari ini" class="song-cover">
+            <button class="play-button">
+              <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+            </button>
+          </div>
+          <h3 class="song-title">Ingatlah Hari Ini</h3>
+          <p class="song-artist">Tulus</p>
+        </div>
+
+        <!-- Song 8 -->
+        <div class="song-card" data-spotify="1U1qumuS2O5Qttw8G7UXOZ" data-title="Teman Hidup" data-artist="Tulus" data-cover="image/02.jpg">
+          <div class="song-cover-wrapper">
+            <img src="image/02.jpg" alt="Teman Hidup" class="song-cover">
+            <button class="play-button">
+              <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+            </button>
+          </div>
+          <h3 class="song-title">Teman Hidup</h3>
+          <p class="song-artist">Tulus</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- YouTube Player -->
+  <div class="youtube-player" id="player">
+    <button class="close-button" id="closePlayer">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+    <div class="player-content">
+      <div class="player-info">
+        <img src="" alt="" class="player-cover" id="playerCover">
+        <div class="player-details">
+          <h3 id="playerTitle"></h3>
+          <p id="playerArtist"></p>
+        </div>
+      </div>
+      <div class="player-video">
+        <iframe
+  id="playerIframe"
+  src=""
+  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+  loading="lazy">
+</iframe>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Get elements
+    const songCards = document.querySelectorAll('.song-card');
+    const player = document.getElementById('player');
+    const playerCover = document.getElementById('playerCover');
+    const playerTitle = document.getElementById('playerTitle');
+    const playerArtist = document.getElementById('playerArtist');
+    const playerIframe = document.getElementById('playerIframe');
+    const closeButton = document.getElementById('closePlayer');
+
+    let currentCard = null;
+
+    // Handle song card click
+songCards.forEach(card => {
+  card.addEventListener('click', () => {
+    const spotifyId = card.dataset.spotify;
+    const title = card.dataset.title;
+    const artist = card.dataset.artist;
+    const cover = card.dataset.cover;
+
+    if (currentCard) {
+      currentCard.classList.remove('active');
+    }
+
+    card.classList.add('active');
+    currentCard = card;
+
+    playerCover.src = cover;
+    playerCover.alt = title;
+    playerTitle.textContent = title;
+    playerArtist.textContent = artist;
+
+    playerIframe.src = `https://open.spotify.com/embed/track/${spotifyId}`;
+
+    player.classList.add('active');
+    document.body.classList.add('player-active');
+  });
+});
+
+
+    // Handle close button
+    closeButton.addEventListener('click', () => {
+      player.classList.remove('active');
+      document.body.classList.remove('player-active');
+      playerIframe.src = '';
+      
+      if (currentCard) {
+        currentCard.classList.remove('active');
+        currentCard = null;
+      }
+    });
+  </script>
+</body>
+</html>
